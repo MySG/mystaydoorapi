@@ -1,0 +1,93 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: MyStay Door API
+  description: API used to open Salto and Hcontrol door locks
+  contact:
+    name: Denis Fiser
+    email: denis.fiser@mystay.cz
+    url: http://mystay.cz
+host: myadmin.mystay.cz
+basePath: /rest/door/v1
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /keys:
+    post:
+      description:
+        "Returns all valid keys TODO: use OAuth2 authentization!!!"
+      operationId: getKeys
+      parameters:
+        - name: hotel
+          in: formData
+          description: Hotel code
+          required: true
+          type: string
+      responses:
+        200:
+          description: keys response
+          schema:
+            $ref: '#/definitions/Keys'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Keys:
+    type: "object"
+    required:
+      - keys
+      - deviceId
+    properties:
+      keys:
+        type: array
+        items:
+          $ref: '#/definitions/Key'
+  Key:
+    required:
+      - type
+      - key
+      - room
+      - hotel
+      - validityStart
+      - validityEnd
+    properties:
+      type:
+        type: string
+        enum:
+          - salto
+          - hcontrol
+      key:
+        type: string
+        description: door access key
+      room:
+        type: string
+        description: room number
+      hotel:
+        type: string
+        description: hotel code
+      validityStart:
+        type: integer
+        format: int64
+        description: validity start timestamp
+      validityEnd:
+        type: integer
+        format: int64
+        description: validity end timestamp
+      singleUse:
+        type: boolean
+        description: true if this key can be used only once
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
