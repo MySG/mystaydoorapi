@@ -40,9 +40,12 @@ definitions:
   Keys:
     type: "object"
     required:
+      - type
       - keys
-      - deviceId
     properties:
+      type:
+        type: string
+        default: "accessKeys"
       keys:
         type: array
         items:
