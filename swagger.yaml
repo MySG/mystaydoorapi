@@ -8,7 +8,7 @@ info:
     email: denis.fiser@mystay.cz
     url: http://mystay.cz
 host: myadmin.mystay.cz
-basePath: /rest/door/v1
+basePath: /api/door/v1
 schemes:
   - https
 consumes:
@@ -17,16 +17,16 @@ produces:
   - application/json
 paths:
   /keys:
-    post:
+    get:
       description:
         "Returns all valid keys TODO: use OAuth2 authentization!!!"
       operationId: getKeys
       parameters:
-        - name: hotel
+        - name: clientId
           in: formData
-          description: Hotel code
-          required: true
-          type: string
+          description: Client id
+          type: integer
+          format: int32
       responses:
         200:
           description: keys response
@@ -40,31 +40,42 @@ definitions:
   Keys:
     type: "object"
     required:
-      - type
+      - code
+      - message
       - keys
     properties:
-      type:
+      code:
+        type: integer
+        format: int32
+        description: Status code
+      message:
         type: string
-        default: "accessKeys"
+        description: Status message
       keys:
         type: array
         items:
           $ref: '#/definitions/Key'
   Key:
     required:
+      - id
       - type
-      - key
+      - accessKey
       - room
       - hotel
+      - client
       - validityStart
       - validityEnd
     properties:
+      id:
+        type: integer
+        format: int32
       type:
         type: string
         enum:
           - salto
           - hcontrol
-      key:
+        description: Key type
+      accessKey:
         type: string
         description: door access key
       room:
@@ -73,6 +84,10 @@ definitions:
       hotel:
         type: string
         description: hotel code
+      client:
+        type: integer
+        format: int32
+        description: client id
       validityStart:
         type: integer
         format: int64
