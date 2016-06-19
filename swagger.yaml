@@ -65,6 +65,7 @@ definitions:
       - client
       - validityStart
       - validityEnd
+      - singleUse
     properties:
       id:
         type: integer
