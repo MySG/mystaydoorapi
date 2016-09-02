@@ -22,9 +22,9 @@ paths:
         "Returns all valid keys TODO: use OAuth2 authentization!!!"
       operationId: getKeys
       parameters:
-        - name: clientId
+        - name: userId
           in: formData
-          description: Client id
+          description: User id
           type: integer
           format: int32
       responses:
@@ -62,7 +62,7 @@ definitions:
       - accessKey
       - room
       - hotel
-      - client
+      - user
       - validityStart
       - validityEnd
       - singleUse
@@ -85,10 +85,10 @@ definitions:
       hotel:
         type: string
         description: hotel code
-      client:
+      user:
         type: integer
         format: int32
-        description: client id
+        description: user id
       validityStart:
         type: integer
         format: int64
